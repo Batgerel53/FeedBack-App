@@ -27,9 +27,9 @@ export const FeedBackProvider = ({ children }) => {
   })
 
   const updateFeedBack = (id, updItem) => {
-   setFeedBack(
-    feedback.map((item)=> (item.id === id ? {...item, ...updItem}: item))
-   )
+    setFeedBack(
+      feedback.map((item) => (item.id === id ? { ...item, ...updItem } : item))
+    )
   }
 
   const deleteFeedBack = (id) => {

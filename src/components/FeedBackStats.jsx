@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import PropTypes from 'prop-types'
 import FeedBackContext from '../context/FeedBackContext'
 function FeedBackStats() {
   const { feedback } = useContext(FeedBackContext)
