@@ -45,12 +45,12 @@ function FeedBackForm() {
 
       if (feedbackEdit === true) {
         updateFeedBack(feedbackEdit.item.id, newFeedback)
-        console.log(
-          '🚀 ~ file: FeedBackForm.jsx ~ line 48 ~ handleSubmit ~ newFeedback',
-          newFeedback,
-        )
       } else {
         addFeedback(newFeedback)
+        console.log(
+          '🚀 ~ file: FeedBackForm.jsx ~ line 50 ~ handleSubmit ~ newFeedback',
+          newFeedback,
+        )
       }
     }
   }

@@ -1,38 +1,36 @@
-import { createContext, useState } from 'react'
-import { v4 as uuidv4 } from 'uuid'
+import { createContext, useState, useEffect } from 'react'
+
 const FeedBackContext = createContext()
 
 export const FeedBackProvider = ({ children }) => {
-  const [feedback, setFeedBack] = useState([
-    {
-      id: 1,
-      text: 'This is useContext hook',
-      rating: 10,
-    },
-    {
-      id: 2,
-      text: 'This is id 2 context hook',
-      rating: 9,
-    },
-    {
-      id: 3,
-      text: 'This is id 3 context hook',
-      rating: 8,
-    },
-  ])
+  const [isLoading, setIsLoading] = useState(true)
+  const [feedback, setFeedBack] = useState([])
 
   const [feedbackEdit, setFeedbackEdit] = useState({
     item: {},
     edit: false,
   })
 
+  useEffect(() => {
+    fetchFeedback()
+  }, [])
+
+  const fetchFeedback = async () => {
+    const response = await fetch(`/feedback?_sort=id&_order=desc`)
+    const data = await response.json()
+    setFeedBack(data)
+    setIsLoading(false)
+  }
+
+  //update feedback
+
   const updateFeedBack = (id, updItem) => {
-    console.log('🚀 ', id)
-    console.log('🚀', updItem)
     setFeedBack(
       feedback.map((item) => (item.id === id ? { ...item, ...updItem } : item))
     )
   }
+
+  // delete feedback
 
   const deleteFeedBack = (id) => {
     if (window.confirm('are you sure you want to delete')) {
@@ -40,9 +38,20 @@ export const FeedBackProvider = ({ children }) => {
     }
   }
 
-  const addFeedback = (newFeedback) => {
-    newFeedback.id = uuidv4()
-    setFeedBack([newFeedback, ...feedback])
+  // add feedback
+
+  const addFeedback = async (newFeedback) => {
+    const response = await fetch('/feedback', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(newFeedback),
+    })
+
+    const data = await response.json()
+
+    setFeedBack([data, ...feedback])
   }
 
   const editFeedback = (item) => {
@@ -57,6 +66,7 @@ export const FeedBackProvider = ({ children }) => {
       value={{
         feedback,
         feedbackEdit,
+        isLoading,
         deleteFeedBack,
         addFeedback,
         editFeedback,
